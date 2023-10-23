@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro</title>
+   
+  </head>
+  <body>
+    <h1>Registro de Usuario</h1>
+    <form action="/users/crear" method="post">
+      <label for="nombre">Nombre de usuario:</label>
+      <input type="text" id="nombre" name="nombre" required />
+
+      <label for="correo">Correo electrónico:</label>
+      <input type="correo" id="correo" name="correo" required />
+
+      <label for="password">Contraseña:</label>
+      <input type="password" id="password" name="password" required />
+
+      <button type="submit">Registrarse</button>
+    </form>
+    <script>
+      const form = document.querySelector("form");
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const nombre = document.getElementById("nombre").value;
+        const correo = document.getElementById("correo").value;
+        const password = document.getElementById("password").value;
+
+        // Crear un objeto con los datos a enviar
+        const data = {
+          nombre: nombre,
+          correo: correo,
+          password: password,
+        };
+
+        // Realizar la solicitud POST al servidor
+        fetch("/users/crear", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => {
+            if (response.ok) {
+              // La solicitud fue exitosa
+              return response.json();
+            } else {
+              // La solicitud falló
+              throw new Error("Error en la solicitud POST");
+            }
+          })
+          .then((data) => {
+            // Manejar la respuesta del servidor
+            console.log("Respuesta del servidor:", data);
+            
+            // Redirige a la página de login.html
+            window.location.href = "/login.html";
+          })
+
+          .catch((error) => {
+            console.error("Error:", error);
+            // Puedes mostrar un mensaje de error aquí
+          });
+      });
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      form {
+        background-color: #fff;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 300px;
+        margin: 0 auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </body>
+</html>
